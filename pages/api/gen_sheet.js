@@ -16,20 +16,10 @@ async function genSheet(req, res) {
 
     try {
         await client.connect();
-        /*
-        query = {
-            "year" : ["2K21"],
-            "branch" : ["CO"],
-            "subj_code" : "CO204",
-            "start" : [1,45],
-            "end" : [50,75]
-        }
-        */
         query['year'] = JSON.parse(query['year']);
         query['branch'] = JSON.parse(query['branch']);
         query['start'] = JSON.parse(query['start']);
         query['end'] = JSON.parse(query['end']);
-        //console.log(query)
         const find_query = query.start.map((start, index) => ({
             roll_no: {
                 $regex: `^${query.year[index]}_${query.branch[index]}`,

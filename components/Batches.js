@@ -8,7 +8,7 @@ export default function Batches(props) {
         const end = JSON.stringify([batch.end]);
         const year = JSON.stringify([batch.year]);
         const branch = JSON.stringify([batch.branch]);
-        const url = `${host}/api/gensheet?subj_code=${batch.subj_code}&year=${year}&branch=${branch}&start=${start}&end=${end}`;
+        const url = `${host}/api/gen_sheet?subj_code=${batch.subj_code}&year=${year}&branch=${branch}&start=${start}&end=${end}`;
         window.location.assign(url);
     }
     const generate_eval_subj = (subj_code) => {
@@ -17,7 +17,7 @@ export default function Batches(props) {
         const end = JSON.stringify(batch_arr.map((batch) => batch.end));
         const year = JSON.stringify(batch_arr.map((batch) => batch.year));
         const branch = JSON.stringify(batch_arr.map((batch) => batch.branch));
-        const url = `${host}/api/gensheet?subj_code=${subj_code}&year=${year}&branch=${branch}&start=${start}&end=${end}`;
+        const url = `${host}/api/gen_sheet?subj_code=${subj_code}&year=${year}&branch=${branch}&start=${start}&end=${end}`;
         window.open(url, "_blank");
     }
     const subjects_taught = user.batches.map(
