@@ -60,14 +60,14 @@ export default function Header() {
             </>
           )}
           <li>
-            <a href="https://github.com/vvo/iron-session">
+            <Link href="/">
               <Image
                 src="/ISNO-bg-32px.png"
                 width="32"
                 height="32"
                 alt=""
               />
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
