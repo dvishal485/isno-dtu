@@ -27,6 +27,11 @@ async function UploadEval(req, res) {
             const ete = parseInt(data[5].trim());
             await client.connect();
             const collection = client.db("isno").collection("students");
+            let eval_dict = {};
+            await collection.findOne({ roll_no: roll_no }).then((result) => {
+                eval_dict = result['evaluation'] ? result['evaluation'] : {};
+            });
+            delete eval_dict[subj_code];
             await collection.updateOne(
                 { roll_no: roll_no },
                 {
@@ -37,7 +42,8 @@ async function UploadEval(req, res) {
                                 mte: isNaN(mte) ? 0 : mte,
                                 prs: isNaN(prs) ? 0 : prs,
                                 ete: isNaN(ete) ? 0 : ete,
-                            }
+                            },
+                            ...eval_dict
                         }
                     }
                 }
@@ -47,17 +53,20 @@ async function UploadEval(req, res) {
             const subj_code = csv[0].split(',')[2].split(' ')[0];
             const lines = csv.slice(1, -1);
             await client.connect();
-            const collection =client.db("isno").collection("students");
+            const collection = client.db("isno").collection("students");
             await lines.forEach(async (line) => {
                 let data = line.split(',');
-                console.log(data);
                 if (data.length < 6) return;
                 let roll_no = data[1];
                 let cws = parseInt(data[2].trim());
                 let mte = parseInt(data[3].trim());
                 let prs = parseInt(data[4].trim());
                 let ete = parseInt(data[5].trim());
-                console.log(roll_no, cws, mte, prs, ete);
+                let eval_dict = {};
+                await collection.findOne({ roll_no: roll_no }).then((result) => {
+                    eval_dict = result['evaluation'] ? result['evaluation'] : {};
+                })
+                delete eval_dict[subj_code];
                 await collection.updateOne(
                     { roll_no: roll_no },
                     {
@@ -68,7 +77,8 @@ async function UploadEval(req, res) {
                                     mte: isNaN(mte) ? 0 : mte,
                                     prs: isNaN(prs) ? 0 : prs,
                                     ete: isNaN(ete) ? 0 : ete,
-                                }
+                                },
+                                ...eval_dict
                             }
                         }
                     }, { upsert: true }
