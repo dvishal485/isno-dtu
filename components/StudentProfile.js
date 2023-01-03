@@ -5,9 +5,11 @@ import React from "react";
 import useSWR from "swr";
 import EvalutionForm from "./EvalutionForm";
 import IDCard from "./IDCard";
+import Result from "./Result";
 
 export default function StudentProfile(props) {
     const { roll_no, user } = props;
+    const [viewResult, setViewResult] = useState(false);
     const [components, setComponents] = useState({});
     const { student, StudentMutate, error, isValidating } = useStudentInfo(roll_no, user);
     const { data: dbStudent, error: dbError, isValidating: dbValidating, mutate: dbRefresh } = useSWR(user?.isLoggedIn ? `/api/database?roll_no=${roll_no}` : null, { refreshWhenHidden: false, refreshWhenOffline: false, revalidateOnFocus: false });
@@ -75,6 +77,20 @@ export default function StudentProfile(props) {
                 <p>
                     {error && "Oops, some error occured!"}
                     {isValidating && "Loading..."}
+                    {!isValidating && student && dbStudent && dbStudent.length == 1 && student.subjects.every(subject => dbStudent[0].evaluation[subject.code] !== undefined) && (
+                        <>
+                            {
+                                viewResult &&
+                                (<>
+                                    <Result student={student} evaluation={dbStudent[0].evaluation} /><br />
+                                    <button onClick={() => setViewResult(false)}>Minimise</button>
+                                </>
+                                ) || (
+                                    <button onClick={() => setViewResult(true)}>View Result</button>
+                                )
+                            }
+                        </>
+                    )}
                     {!isValidating && student && (
                         <>
                             <p><strong>Branch</strong><br />{student.branch}<br /></p>
