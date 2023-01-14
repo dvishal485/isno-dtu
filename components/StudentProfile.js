@@ -77,7 +77,7 @@ export default function StudentProfile(props) {
                 <p>
                     {error && "Oops, some error occured!"}
                     {isValidating && "Loading..."}
-                    {!isValidating && student && dbStudent && dbStudent.length == 1 && student.subjects.every(subject => dbStudent[0].evaluation[subject.code] !== undefined) && (
+                    {!isValidating && student && dbStudent && dbStudent.length == 1 && dbStudent[0].evaluation && student.subjects.every(subject => dbStudent[0].evaluation[subject.code] !== undefined) && (
                         <>
                             {
                                 viewResult &&
